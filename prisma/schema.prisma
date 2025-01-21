@@ -1,0 +1,75 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+model School {
+  id                Int                 @id @default(autoincrement())
+  name              String              @unique
+  schoolYears       SchoolYear[]        // Relación con años
+  schoolYearSubjects SchoolYearSubject[] // Relación con la tabla que unifica escuela, año y materia
+}
+
+model Year {
+  id                Int                 @id @default(autoincrement())
+  name              String              @unique
+  schoolYears       SchoolYear[]        // Relación con escuelas
+  schoolYearSubjects SchoolYearSubject[] // Relación con la tabla que unifica escuela, año y materia
+}
+
+model Subject {
+  id                Int                 @id @default(autoincrement())
+  name              String
+  schoolYearSubjects SchoolYearSubject[] // Relación con la tabla que unifica escuela, año y materia
+
+  @@unique([name]) // Aseguramos que los nombres de las materias sean únicos globalmente
+}
+
+model SchoolYear {
+  id        Int      @id @default(autoincrement())
+  schoolId  Int
+  yearId    Int
+  school    School   @relation(fields: [schoolId], references: [id], onDelete: Cascade)
+  year      Year     @relation(fields: [yearId], references: [id], onDelete: Cascade)
+  schoolYearSubjects SchoolYearSubject[] // Relación con materias específicas de esta combinación
+
+  @@unique([schoolId, yearId]) // Una combinación única de escuela y año
+}
+
+model SchoolYearSubject {
+  id             Int           @id @default(autoincrement())
+  schoolYearId   Int
+  subjectId      Int
+  schoolYear     SchoolYear    @relation(fields: [schoolYearId], references: [id], onDelete: Cascade)
+  subject        Subject       @relation(fields: [subjectId], references: [id], onDelete: Cascade)
+  topics         Topic[]       // Temas asociados a esta combinación
+
+  @@unique([schoolYearId, subjectId]) // Garantiza que no haya duplicados de la combinación escuela, año y materia
+  School School[]
+  Year Year[]
+}
+
+model Topic {
+  id                Int                 @id @default(autoincrement())
+  name              String
+  schoolYearSubjectId Int
+  schoolYearSubject SchoolYearSubject   @relation(fields: [schoolYearSubjectId], references: [id], onDelete: Cascade)
+  tests             Test[]
+
+  @@unique([name, schoolYearSubjectId]) // El nombre del tema es único respecto a una escuela, año y materia
+}
+
+model Test {
+  id        Int      @id @default(autoincrement())
+  name      String
+  topicId   Int
+  imgUrl   String
+  topic     Topic    @relation(fields: [topicId], references: [id], onDelete: Cascade)
+
+  @@unique([name, topicId]) // El nombre de la prueba es único respecto al tema
+}

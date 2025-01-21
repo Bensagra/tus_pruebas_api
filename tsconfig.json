@@ -1,0 +1,18 @@
+{
+  "compilerOptions": {
+    "target": "ES6",                       // El código se transpila a ES6
+    "module": "CommonJS",                   // Usa el sistema de módulos CommonJS
+    "outDir": "./dist",                     // El código compilado se genera en la carpeta 'dist'
+    "rootDir": "./src",                     // El código fuente está en la carpeta 'src'
+    "esModuleInterop": true,                // Para importar módulos de forma compatible con ES Modules
+    "strict": true,                         // Activa todas las verificaciones estrictas de TypeScript
+    "skipLibCheck": true,                   // Omite la comprobación de las bibliotecas para mejorar el tiempo de compilación
+    "forceConsistentCasingInFileNames": true // Fuerza un nombre de archivo consistente
+  },
+  "include": [
+    "src/**/*.ts"                           // Incluye todos los archivos .ts dentro de la carpeta 'src'
+  ],
+  "exclude": [
+    "node_modules"                          // Excluye la carpeta 'node_modules'
+  ]
+}
