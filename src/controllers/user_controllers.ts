@@ -70,27 +70,59 @@ const topics = async (req: any, res: any, prisma: PrismaClient) => {
         res.status(500).json({ error: error.message });
     })
 }
-const tests = async (req: any, res: any, prisma: PrismaClient) => {
-    const {school, year,subject,topic} = req.body;
-    await prisma.test.findMany({
+// const tests = async (req: any, res: any, prisma: PrismaClient) => {
+//     const {school, year,subject,topic} = req.body;
+//     await prisma.test.findMany({
         
-        where:{topic:{
-            schoolYearSubject:{
-                schoolYear:{
-                    schoolId: school,
-                    yearId: year
-                },
-                subjectId: subject
-            },
-            id: topic
+//         where:{topic:{
+//             schoolYearSubject:{
+//                 schoolYear:{
+//                     schoolId: school,
+//                     yearId: year
+//                 },
+//                 subjectId: subject
+//             },
+//             id: topic
 
-        }}}).then((topics) => {
+//         }}}).then((topics) => {
         
-        res.status(200).json(topics);
-    }).catch((error) => {
-        res.status(500).json({ error: error.message });
+//         res.status(200).json(topics);
+//     }).catch((error) => {
+//         res.status(500).json({ error: error.message });
+//     })
+// }
+const tests = async (req: any, res: any, prisma: PrismaClient) => {
+    const { school, year, subject, topic } = req.body;
+
+    await prisma.test.findMany({
+        where: {
+            topic: {
+                schoolYearSubject: {
+                    schoolYear: {
+                        schoolId: school,
+                        yearId: year,
+                    },
+                    subjectId: subject,
+                },
+                id: topic,
+            },
+        },
+        select: {
+            id: true,
+            name: true,
+            imgUrl: true,
+            profesor: true,
+            topicId: true,
+        },
     })
-}
+    .then((tests) => {
+        res.status(200).json(tests);
+    })
+    .catch((error) => {
+        res.status(500).json({ error: error.message });
+    });
+};
+
 
 
 export const userControllers = {
