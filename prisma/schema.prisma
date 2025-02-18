@@ -1,3 +1,4 @@
+//schema.prisma
 generator client {
   provider = "prisma-client-js"
 }
@@ -73,4 +74,5 @@ model Test {
   topic     Topic    @relation(fields: [topicId], references: [id], onDelete: Cascade)
 
   @@unique([name, topicId]) // El nombre de la prueba es único respecto al tema
+  profesor  String?
 }
