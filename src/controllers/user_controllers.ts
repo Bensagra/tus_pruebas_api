@@ -1,3 +1,5 @@
+//user_controllers
+
 import { PrismaClient } from "@prisma/client";
 
 
@@ -70,7 +72,6 @@ const topics = async (req: any, res: any, prisma: PrismaClient) => {
         res.status(500).json({ error: error.message });
     })
 }
-// const tests = async (req: any, res: any, prisma: PrismaClient) => {
 //     const {school, year,subject,topic} = req.body;
 //     await prisma.test.findMany({
         
@@ -90,7 +91,7 @@ const topics = async (req: any, res: any, prisma: PrismaClient) => {
 //     }).catch((error) => {
 //         res.status(500).json({ error: error.message });
 //     })
-// }
+
 const tests = async (req: any, res: any, prisma: PrismaClient) => {
     const { school, year, subject, topic } = req.body;
 
