@@ -126,10 +126,43 @@ const tests = async (req: any, res: any, prisma: PrismaClient) => {
 
 
 
+const summary = async (req: any, res: any, prisma: PrismaClient) => {
+    const { school, year, subject, topic } = req.body;
+
+    await prisma.summary.findMany({
+        where: {
+            topic: {
+                schoolYearSubject: {
+                    schoolYear: {
+                        schoolId: school,
+                        yearId: year,
+                    },
+                    subjectId: subject,
+                },
+                id: topic,
+            },
+        },
+        select: {
+            id: true,
+            name: true,
+            imgUrl: true,
+            topicId: true,
+        },
+    })
+    .then((tests) => {
+        res.status(200).json(tests);
+    })
+    .catch((error) => {
+        res.status(500).json({ error: error.message });
+    });
+};
+
+
 export const userControllers = {
     schools,
     years,
     subject,
     topics,
-    tests
+    tests,
+    summary
 }

@@ -20,6 +20,9 @@ router.post("/topics", (req: Request, res: Response) =>
 router.post("/tests", (req: Request, res: Response) =>
     userControllers.tests(req, res, prisma)
 );
+router.post("/summaries", (req: Request, res: Response) =>
+    userControllers.summary(req, res, prisma)
+);
 
 
 export default router;
