@@ -60,6 +60,7 @@ model Topic {
   schoolYearSubject   SchoolYearSubject @relation(fields: [schoolYearSubjectId], references: [id], onDelete: Cascade)
 
   @@unique([name, schoolYearSubjectId])
+  Summary Summary[]
 }
 
 model Test {
@@ -68,6 +69,18 @@ model Test {
   topicId  Int
   imgUrl   String
   profesor String?
+  pag String?
+  topic    Topic   @relation(fields: [topicId], references: [id], onDelete: Cascade)
+
+  @@unique([name, topicId])
+}
+
+
+model Summary {
+  id       Int     @id @default(autoincrement())
+  name     String
+  topicId  Int
+  imgUrl   String
   topic    Topic   @relation(fields: [topicId], references: [id], onDelete: Cascade)
 
   @@unique([name, topicId])
