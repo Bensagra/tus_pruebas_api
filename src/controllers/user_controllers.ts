@@ -114,6 +114,7 @@ const tests = async (req: any, res: any, prisma: PrismaClient) => {
             imgUrl: true,
             profesor: true,
             topicId: true,
+            pag: true,
         },
     })
     .then((tests) => {
